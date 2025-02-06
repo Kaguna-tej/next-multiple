@@ -1,0 +1,253 @@
+ Test the API
+Get all users: GET http://localhost:3000/users
+Get a user by username: GET http://localhost:3000/users/:username
+Create a new user: POST http://localhost:3000/users with the following body:
+json
+Copy code
+{
+  "username": "john_doe",
+  "password": "password123",
+  "email": "john@example.com"
+}
+
+
+
+
+use mydatabase  # Switch to the 'mydatabase' database, it will create if doesn't exist
+
+db.users.insertMany([
+  {
+    username: "john_doe",
+    password: "password123",
+    email: "john@example.com",
+    createdAt: new Date()
+  },
+  {
+    username: "jane_doe",
+    password: "securepassword",
+    email: "jane@example.com",
+    createdAt: new Date()
+  },
+  {
+    username: "alice_smith",
+    password: "alicepass",
+    email: "alice@example.com",
+    createdAt: new Date()
+  }
+]);
+
+# Verify the data was added
+db.users.find().pretty();
+
+
+
+
+
+
+
+
+
+
+
+Here is a list of all the relevant API calls and their descriptions based on your previous setup:
+
+1. Create a New User
+Method: POST
+URL: /api/users
+Description: This endpoint will allow you to create a new user by sending a request with user data.
+Example Request:
+json
+Copy code
+{
+  "username": "john_doe",
+  "email": "john.doe@example.com",
+  "password": "securepassword123"
+}
+
+
+
+2. Fetch All Users
+Method: GET
+URL: /api/users
+Description: This endpoint will fetch all the users in the system.
+Example Response:
+json
+Copy code
+[
+  {
+    "id": "674ed0e45dc1cfb47d46cf4e",
+    "username": "john_doe",
+    "email": "john.doe@example.com",
+    "createdAt": "2024-01-01T12:00:00Z"
+  },
+  {
+    "id": "b7894e02dd53a93b74d3cf5f",
+    "username": "jane_doe",
+    "email": "jane.doe@example.com",
+    "createdAt": "2024-01-02T12:00:00Z"
+  }
+]
+
+
+
+3. Fetch a Single User by Username
+Method: GET
+URL: /api/users/username/{username}
+Description: This endpoint will fetch a user by their username.
+Example URL: /api/users/username/john_doe
+Example Response:
+json
+Copy code
+{
+  "id": "674ed0e45dc1cfb47d46cf4e",
+  "username": "john_doe",
+  "email": "john.doe@example.com",
+  "createdAt": "2024-01-01T12:00:00Z"
+}
+
+
+
+4. Fetch a Single User by ID
+Method: GET
+URL: /api/users/id/{id}
+Description: This endpoint will fetch a user by their unique ID.
+Example URL: /api/users/id/674ed0e45dc1cfb47d46cf4e
+Example Response:
+json
+Copy code
+{
+  "id": "674ed0e45dc1cfb47d46cf4e",
+  "username": "john_doe",
+  "email": "john.doe@example.com",
+  "createdAt": "2024-01-01T12:00:00Z"
+}
+
+
+
+5. Update a User
+Method: PUT
+URL: /api/users/id/{id}
+Description: This endpoint will update an existing user’s information by their ID.
+Example URL: /api/users/id/674ed0e45dc1cfb47d46cf4e
+Example Request:
+json
+Copy code
+{
+  "username": "john_doe_updated",
+  "email": "john.doe.updated@example.com"
+}
+Example Response:
+json
+Copy code
+{
+  "id": "674ed0e45dc1cfb47d46cf4e",
+  "username": "john_doe_updated",
+  "email": "john.doe.updated@example.com",
+  "updatedAt": "2024-01-03T12:00:00Z"
+}
+
+
+
+6. Delete a User
+Method: DELETE
+URL: /api/users/id/{id}
+Description: This endpoint will delete a user by their ID.
+Example URL: /api/users/id/674ed0e45dc1cfb47d46cf4e
+Example Response:
+json
+Copy code
+{
+  "message": "User deleted successfully"
+}
+
+
+
+7. Fetch a Single User by Email
+Method: GET
+URL: /api/users/email/{email}
+Description: This endpoint will fetch a user by their email address.
+Example URL: /api/users/email/john.doe@example.com
+Example Response:
+json
+Copy code
+{
+  "id": "674ed0e45dc1cfb47d46cf4e",
+  "username": "john_doe",
+  "email": "john.doe@example.com",
+  "createdAt": "2024-01-01T12:00:00Z"
+}
+
+
+
+8. User Authentication (Login)
+Method: POST
+URL: /api/users/login
+Description: This endpoint is used for user login, where credentials are provided for authentication.
+Example Request:
+json
+Copy code
+{
+  "username": "john_doe",
+  "password": "securepassword123"
+}
+Example Response:
+json
+Copy code
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGVkMGU0NWRjMWNmYjQ3ZDQ2Y2Y0ZWEiLCJ1c2VybmFtZSI6ImplbmlmX29uZmVsc3MifQ.kghkf4yHzndXx8Xc54wgnWAji1xALuwm5hq5pZsZLtA"
+}
+
+
+
+9. Logout User
+Method: POST
+URL: /api/users/logout
+Description: This endpoint logs out the user by invalidating their session or token.
+Example Response:
+json
+Copy code
+{
+  "message": "User logged out successfully"
+}
+
+
+10. Password Reset Request
+Method: POST
+URL: /api/users/password-reset
+Description: This endpoint initiates a password reset process by sending a reset link to the user’s email.
+Example Request:
+json
+Copy code
+{
+  "email": "john.doe@example.com"
+}
+Example Response:
+json
+Copy code
+{
+  "message": "Password reset link sent successfully"
+}
+
+
+11. Password Reset (With Token)
+Method: POST
+URL: /api/users/password-reset/:token
+Description: This endpoint resets the password using the token from the reset email.
+Example URL: /api/users/password-reset/abc123xyz
+Example Request:
+json
+Copy code
+{
+  "newPassword": "newSecurePassword123"
+}
+Example Response:
+json
+Copy code
+{
+  "message": "Password reset successful"
+}
+
+
+Notes:
+Replace {username}, {email}, {id}, and {token} with actual values in the URL when making requests.
+These are typical RESTful endpoints for a user management API and might differ depending on your implementation.

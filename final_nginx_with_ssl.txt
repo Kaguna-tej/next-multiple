@@ -1,0 +1,112 @@
+server {
+    listen 443 ssl;
+    server_name vamshi.xyz www.vamshi.xyz;
+
+    ssl_certificate /etc/ssl/cert.pem;  # Path to Cloudflare's Origin Certificate
+    ssl_certificate_key /etc/ssl/key.key;  # Path to Cloudflare's Private Key
+
+    # Enable SSL-related settings for stronger security
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256';
+    ssl_prefer_server_ciphers on;
+
+
+    # Home Page Project
+    location / {
+        proxy_pass http://localhost:3000; # Port for the home project
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # First Project (/one)
+    location /one {
+        proxy_pass http://localhost:3001/; # Port for the first project
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # Handling Next.js static files under '/one/_next'
+    location /one/_next/ {
+        proxy_pass http://localhost:3001/_next/;  # Directly forward requests to static files
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # Second Project (/two)
+    location /two {
+        proxy_pass http://localhost:3002/; # Port for the second project
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # Handling Next.js static files under '/two/_next'
+    location /two/_next/ {
+        proxy_pass http://localhost:3002/_next/;  # Directly forward requests to static files
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # Third Project (/three)
+    location /three {
+        proxy_pass http://localhost:3003/; # Port for the third project
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # Handling Next.js static files under '/three/_next'
+    location /three/_next/ {
+        proxy_pass http://localhost:3003/_next/;  # Directly forward requests to static files
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # Fourth Project (/four)
+    location /four {
+        proxy_pass http://localhost:3004/; # Port for the fourth project
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # Handling Next.js static files under '/four/_next'
+    location /four/_next/ {
+        proxy_pass http://localhost:3004/_next/;  # Directly forward requests to static files
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+# HTTP (Port 80) configuration to redirect to HTTPS
+server {
+    listen 80;
+    server_name vamshi.xyz www.vamshi.xyz;
+
+    # Redirect all HTTP traffic to HTTPS
+    return 301 https://$host$request_uri;
+}

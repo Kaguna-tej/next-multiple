@@ -1,0 +1,9 @@
+PORT=3000 pm2 start npm --name "home" -- start
+
+PORT=3001 pm2 start npm --name "one" -- start
+
+PORT=3002 pm2 start npm --name "two" -- start
+
+PORT=3003 pm2 start npm --name "three" -- start
+
+PORT=3004 pm2 start npm --name "four" -- start
